@@ -1,1 +1,181 @@
 # C-Bank-Account-system
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+class BankAccount {
+private:
+    string fname, lname, mname, address;
+    string username, password, accType;
+    double balance;
+
+public:
+    BankAccount() {
+        balance = 0;
+    }
+
+    void createAccount() {
+        cout << "\n---- CREATE ACCOUNT ----\n";
+
+        cout << "First Name : ";
+        cin >> fname;
+
+        cout << "Last Name : ";
+        cin >> lname;
+
+        cout << "Mother Name : ";
+        cin >> mname;
+
+        cout << "Address : ";
+        cin >> address;
+
+        int ch;
+        cout << "\nSelect Account Type :\n";
+        cout << "1. Saving Account\n2. Current Account\nChoice : ";
+        cin >> ch;
+
+        accType = (ch == 1) ? "Saving Account" : "Current Account";
+
+        cout << "Create Username : ";
+        cin >> username;
+
+        cout << "Create Password : ";
+        cin >> password;
+
+        cout << "\nACCOUNT CREATED SUCCESSFULLY....!\n";
+    }
+
+    bool login() {
+        string u, p;
+        cout << "\n---- ACCOUNT LOGIN ----\n";
+        cout << "UserName : ";
+        cin >> u;
+        cout << "Password : ";
+        cin >> p;
+
+        if (u == username && p == password) {
+            cout << "\nLOGIN SUCCESSFUL....\n";
+            return true;
+        } else {
+            cout << "\nINVALID LOGIN DETAILS\n";
+            return false;
+        }
+    }
+
+    void checkBalance() {
+        cout << "\n--- BALANCE DASHBOARD ---\n";
+        cout << "ACCOUNT BALANCE : " << fixed << setprecision(2) << balance << endl;
+    }
+
+    void deposit() {
+        double amt;
+        cout << "\n--- DEPOSIT CASH ---\n";
+        cout << "Enter Deposit Amount : ";
+        cin >> amt;
+        balance += amt;
+        cout << "CASH DEPOSIT SUCCESSFUL....\n";
+    }
+
+    void withdraw() {
+        double amt;
+        cout << "\n--- WITHDRAWAL CASH ---\n";
+        cout << "Enter Withdrawal Amount : ";
+        cin >> amt;
+
+        if (amt <= balance) {
+            balance -= amt;
+            cout << "CASH WITHDRAWAL SUCCESSFUL....\n";
+        } else {
+            cout << "INSUFFICIENT BALANCE\n";
+        }
+    }
+
+    void transfer() {
+        double amt;
+        string toUser;
+        cout << "\n--- TRANSFER MONEY ---\n";
+        cout << "Enter Amount : ";
+        cin >> amt;
+
+        if (amt <= balance) {
+            cout << "Transfer To (username) : ";
+            cin >> toUser;
+            balance -= amt;
+            cout << "AMOUNT SUCCESSFULLY TRANSFERRED....\n";
+        } else {
+            cout << "INSUFFICIENT BALANCE\n";
+        }
+    }
+
+    void accountInfo() {
+        cout << "\n--- ACCOUNT INFO ---\n";
+        cout << "Account Type : " << accType << endl;
+        cout << "UserName     : " << username << endl;
+        cout << "Password     : " << password << endl;
+        cout << "First Name   : " << fname << endl;
+        cout << "Last Name    : " << lname << endl;
+        cout << "Mother Name  : " << mname << endl;
+        cout << "Address      : " << address << endl;
+    }
+
+    void updateUsername() {
+        string newUser;
+        cout << "Current Username : " << username << endl;
+        cout << "Enter New Username : ";
+        cin >> newUser;
+        username = newUser;
+        cout << "USERNAME UPDATED SUCCESSFULLY\n";
+    }
+};
+
+int main() {
+    BankAccount acc;
+    int choice;
+    bool loggedIn = false;
+
+    do {
+        cout << "\nWELCOME TO BANK ACCOUNT SYSTEM\n";
+        cout << "1. CREATE NEW ACCOUNT\n";
+        cout << "2. LOGIN\n";
+        cout << "0. EXIT\n";
+        cout << "ENTER YOUR CHOICE : ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            acc.createAccount();
+            break;
+
+        case 2:
+            loggedIn = acc.login();
+            while (loggedIn) {
+                int ch;
+                cout << "\n1. CHECK BALANCE\n2. DEPOSIT CASH\n3. WITHDRAW CASH\n";
+                cout << "4. TRANSFER MONEY\n5. ACCOUNT INFO\n6. UPDATE USERNAME\n0. LOGOUT\n";
+                cout << "Choice : ";
+                cin >> ch;
+
+                switch (ch) {
+                case 1: acc.checkBalance(); break;
+                case 2: acc.deposit(); break;
+                case 3: acc.withdraw(); break;
+                case 4: acc.transfer(); break;
+                case 5: acc.accountInfo(); break;
+                case 6: acc.updateUsername(); break;
+                case 0: loggedIn = false; break;
+                default: cout << "Invalid Choice\n";
+                }
+            }
+            break;
+
+        case 0:
+            cout << "\nTHANK YOU FOR USING SYSTEM\n";
+            break;
+
+        default:
+            cout << "INVALID OPTION\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
